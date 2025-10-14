@@ -1,53 +1,51 @@
 package chris.springboot.HelloWorld;
 
+import chris.springboot.HelloWorld.models.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/todo")
 public class TodoController {
     @Autowired
     private TodoService todoService;
-    @GetMapping("/home")
-    String getTodo(){
-        return "Todo";
-    }
-    @GetMapping("/id")
-    String getTodoId(){
-        return "Id";
-    }
 
     //Path Variable
+    //Retrive(GET)
     @GetMapping("/{id}")
-    String getTodoById(@PathVariable long id){
-        return "Todo with ID "+ id;
+    ResponseEntity<Todo> getTodoById(@PathVariable long id){
+        try{
+            Todo createdTodo = todoService.getTodoById(id);
+            return new ResponseEntity<>(createdTodo, HttpStatus.OK);
+        }
+        catch (RuntimeException exception) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
 
-    //Request Param
-    @GetMapping("/by-id")
-    //http://localhost:8081/api/v1/todo/by-id?id=10
-    String getTodoByIdParam(@RequestParam long id){
-        return "Todo with ID " + id;
+    //GetAllData(GET)
+    @GetMapping
+    ResponseEntity<List<Todo>> getTodos(){
+        return new ResponseEntity<List<Todo>>(todoService.getTodos(), HttpStatus.OK);
     }
 
-    @GetMapping("/by-todoId")
-    //http://localhost:8081/api/v1/todo/by-todoId?todoId=25
-    String getTodoByIdParameter(@RequestParam("todoId") long id){
-        return "Todo with ID " + id;
-    }
-
+    //Create(POST)
     @PostMapping("/create")
-    String createUser(@RequestBody String body){
-        return body;    
+    ResponseEntity<Todo> createUser(@RequestBody Todo todo){
+        return new ResponseEntity<>(todoService.createTodo(todo), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    String updateTodoById(@PathVariable long id){
-        return "Update Todo with ID "+ id;
+    @PutMapping
+    ResponseEntity<Todo> updateTodoById(@RequestBody Todo todo){
+        return new ResponseEntity<>(todoService.updateTodo(todo), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    String deleteTodoById(@PathVariable long id){
-        return "Delete Todo with ID "+ id;
+    void deleteTodoById(@PathVariable long id){
+        todoService.deleteTodoById(id);
     }
 }

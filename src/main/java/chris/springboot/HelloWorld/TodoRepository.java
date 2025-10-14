@@ -1,10 +1,8 @@
 package chris.springboot.HelloWorld;
 
-import org.springframework.stereotype.Repository;
+import chris.springboot.HelloWorld.models.Todo;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class TodoRepository{
-    String getAllTodos(){
-        return "All Todos";
-    }
+public interface TodoRepository extends JpaRepository<Todo, Long> {
+
 }
