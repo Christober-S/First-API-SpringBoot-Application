@@ -1,6 +1,7 @@
 package chris.springboot.HelloWorld;
 
 import chris.springboot.HelloWorld.models.Todo;
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,11 @@ public class TodoController {
     @GetMapping
     ResponseEntity<List<Todo>> getTodos(){
         return new ResponseEntity<List<Todo>>(todoService.getTodos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/page")
+    ResponseEntity<Page<Todo>> getTodosPaged(@RequestParam int page, @RequestParam int size){
+        return new ResponseEntity<>(todoService.getAllTodosPages(page, size), HttpStatus.OK);
     }
 
     //Create(POST)
