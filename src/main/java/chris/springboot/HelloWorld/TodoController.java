@@ -1,6 +1,9 @@
 package chris.springboot.HelloWorld;
 
 import chris.springboot.HelloWorld.models.Todo;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,12 +14,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/todo")
+@Slf4j
 public class TodoController {
     @Autowired
     private TodoService todoService;
 
     //Path Variable
-    //Retrive(GET)
+    //Retrieve (GET)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Todo retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Todo was not found")
+    })
     @GetMapping("/{id}")
     ResponseEntity<Todo> getTodoById(@PathVariable long id){
         try{
@@ -24,6 +32,9 @@ public class TodoController {
             return new ResponseEntity<>(createdTodo, HttpStatus.OK);
         }
         catch (RuntimeException exception) {
+            log.info("Error");
+            log.warn("");
+            log.error(" ", exception);
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
