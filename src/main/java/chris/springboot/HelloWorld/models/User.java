@@ -1,29 +1,28 @@
 package chris.springboot.HelloWorld.models;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Todo {
+@Builder
+@Table(name = "UserTable")
+public class User {
     @Id
     @GeneratedValue
     Long id;
 
-    @NotNull
-    @NotBlank
-    @Schema (name="Title", example="Complete Spring Boot")
-    String title;
+    @Email
+    String email;
 
-    Boolean isCompleted;
-
+    String password;
 }

@@ -1,5 +1,6 @@
-package chris.springboot.HelloWorld;
+package chris.springboot.HelloWorld.controller;
 
+import chris.springboot.HelloWorld.service.TodoService;
 import chris.springboot.HelloWorld.models.Todo;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
