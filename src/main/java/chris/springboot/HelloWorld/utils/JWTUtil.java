@@ -13,7 +13,7 @@ import java.util.Date;
 @Component
 public class JWTUtil {
     private final String SECRET="This is an example of a very secret key used for JWT generation";
-    private final long EXPIRATION_TIME=1000*60; // 1 minute
+    private final long EXPIRATION_TIME=1000*60*60; // 1 hour
     private final Key secretKey = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
     public String generateToken(String email) {
@@ -21,7 +21,7 @@ public class JWTUtil {
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(secretKey, SignatureAlgorithm.ES256)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 

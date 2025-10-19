@@ -27,7 +27,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Map<String, String> body){
         String email = body.get("email");
-        String password = body.get("password");
+        String password = passwordEncoder.encode(body.get("password"));
 
         if(userRepository.findByEmail(email).isPresent()){
             return new ResponseEntity<>("Email already exits", HttpStatus.CONFLICT);
